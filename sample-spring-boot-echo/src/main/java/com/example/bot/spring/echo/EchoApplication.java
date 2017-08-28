@@ -54,7 +54,7 @@ public class EchoApplication {
     //more code goes here
 //}catch(MalformedURLException ex){
 
-        return new TextMessage("TEST: "+event.getMessage().getText());
+        return new TextMessage("TEST: "+o.getClass().getName());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
 //        return new TextMessage(response.toString());
