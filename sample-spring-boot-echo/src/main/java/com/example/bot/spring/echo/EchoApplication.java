@@ -52,13 +52,13 @@ try{
       System.out.println(str); 
     }
     in.close();
-       return new TextMessage("TEST: "+event.getMessage().getText());
 }
-catch (MalformedURLException e) {
-    // exception handler code here
-    // ...
-}
+catch (MalformedURLException e){
+        System.err.println("New URL failed");
+        System.err.println("exception thrown: " + e.getMessage());
+    }
 
+       return new TextMessage("TEST: "+event.getMessage().getText());
  
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
