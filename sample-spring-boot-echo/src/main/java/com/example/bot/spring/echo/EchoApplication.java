@@ -26,11 +26,15 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import org.jsoup.Jsoup;
-import org.jsoup.helper.Validate;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.List;
+import com.google.gson.Gson;
 
 
 @SpringBootApplication
@@ -45,13 +49,17 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-        String html = "http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt";
-Document doc = Jsoup.parse(html); 
-String text = doc.body().text(); // "An example link"
-        
-    //more code goes here
-//}catch(MalformedURLException ex){
+           Gson gson = new Gson();
 
+        String json = readUrl("http://api.wunderground.com/api/57dd9039b81a9c21/conditions/q/CA/San_Francisco.json");
+
+        Page page = gson.fromJson(json, Page.class);
+
+        System.out.println(page.description);
+        System.out.println(page.language);
+        System.out.println(page.link);
+        System.out.println(page.title);
+        
         return new TextMessage("TEST: "+text);
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
@@ -61,5 +69,37 @@ String text = doc.body().text(); // "An example link"
     @EventMapping
     public void handleDefaultMessageEvent(Event event) {
         System.out.println("event: " + event);
+    }
+       private static String readUrl(String urlString) throws Exception {
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuffer buffer = new StringBuffer();
+            int read;
+            char[] chars = new char[1024];
+            while ((read = reader.read(chars)) != -1)
+                buffer.append(chars, 0, read); 
+
+            return buffer.toString();
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+
+    }
+
+    static class Page {
+        String title;
+        String link;
+        String description;
+        String language;
+        List<Item> items;
+    }
+
+    static class Item {
+        String title;
+        String link;
+        String description;
     }
 }
