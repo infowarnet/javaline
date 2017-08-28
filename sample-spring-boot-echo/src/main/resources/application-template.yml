@@ -26,8 +26,3 @@ line.bot:
 #
 #logging.level:
 #   com.linecorp.bot.client.wire: INFO
-<dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>2.1</version>
-</dependency>
