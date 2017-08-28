@@ -27,14 +27,8 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.List;
-import com.google.gson.Gson;
+import java.net.*;
+import java.io.*;
 
 
 @SpringBootApplication
@@ -45,20 +39,18 @@ public class EchoApplication {
     }
         
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-           Gson gson = new Gson();
+        URL oracle = new URL("http://www.oracle.com/");
+        BufferedReader in = new BufferedReader(
+        new InputStreamReader(oracle.openStream()));
 
-        String json = readUrl("http://api.wunderground.com/api/57dd9039b81a9c21/conditions/q/CA/San_Francisco.json");
-
-        Page page = gson.fromJson(json, Page.class);
-
-        System.out.println(page.description);
-        System.out.println(page.language);
-        System.out.println(page.link);
-        System.out.println(page.title);
+        String inputLine;
+        while ((inputLine = in.readLine()) != null)
+            System.out.println(inputLine);
+        in.close();
         
         return new TextMessage("TEST: "+text);
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
