@@ -53,11 +53,9 @@ try{
     }
     in.close();
 }
-catch (MalformedURLException e){
-        System.err.println("New URL failed");
-        System.err.println("exception thrown: " + e.getMessage());
-    }
-
+  catch(IOException ex) {
+    System.out.println("Couldn't open URL. Try again.");
+  }
        return new TextMessage("TEST: "+event.getMessage().getText());
  
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
