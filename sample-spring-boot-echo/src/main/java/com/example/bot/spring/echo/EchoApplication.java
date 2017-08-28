@@ -26,8 +26,12 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import java.net.*;
-import java.io.*;
+import org.jsoup.Jsoup;
+import org.jsoup.helper.Validate;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 
 @SpringBootApplication
 @LineMessageHandler
@@ -41,20 +45,14 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-    try {
-      URL u = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-
-      Object o = u.getContent();
-      System.out.println("I got a " + o.getClass().getName());
-    } catch (Exception ex) {
-      System.err.println(ex);
-    }
+        String html = "http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt";
+Document doc = Jsoup.parse(html); 
+String text = doc.body().text(); // "An example link"
         
-
     //more code goes here
 //}catch(MalformedURLException ex){
 
-        return new TextMessage("TEST: "+o.getClass().getName());
+        return new TextMessage("TEST: "+text);
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
 //        return new TextMessage(response.toString());
