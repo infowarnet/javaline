@@ -42,7 +42,7 @@ public class EchoApplication {
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
-
+/*
      URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
 
     BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -51,7 +51,7 @@ public class EchoApplication {
       System.out.println(str); 
     }
     in.close();
-        
+*/        
         return new TextMessage("TEST: "+event.getMessage().getText());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
