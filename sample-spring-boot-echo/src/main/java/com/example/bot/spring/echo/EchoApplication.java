@@ -27,9 +27,9 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
-import java.net.*;
-import java.io.*;
-
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 @SpringBootApplication
 @LineMessageHandler
@@ -43,14 +43,14 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-        URL oracle = new URL("http://www.oracle.com/");
-        BufferedReader in = new BufferedReader(
-        new InputStreamReader(oracle.openStream()));
+     URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
 
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-            System.out.println(inputLine);
-        in.close();
+    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+    String str;
+    while ((str = in.readLine()) != null) {
+      System.out.println(str); 
+    }
+    in.close();
         
         return new TextMessage("TEST: "+text);
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
@@ -62,36 +62,5 @@ public class EchoApplication {
     public void handleDefaultMessageEvent(Event event) {
         System.out.println("event: " + event);
     }
-       private static String readUrl(String urlString) throws Exception {
-        BufferedReader reader = null;
-        try {
-            URL url = new URL(urlString);
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
-            StringBuffer buffer = new StringBuffer();
-            int read;
-            char[] chars = new char[1024];
-            while ((read = reader.read(chars)) != -1)
-                buffer.append(chars, 0, read); 
-
-            return buffer.toString();
-        } finally {
-            if (reader != null)
-                reader.close();
-        }
-
-    }
-
-    static class Page {
-        String title;
-        String link;
-        String description;
-        String language;
-        List<Item> items;
-    }
-
-    static class Item {
-        String title;
-        String link;
-        String description;
-    }
+   
 }
