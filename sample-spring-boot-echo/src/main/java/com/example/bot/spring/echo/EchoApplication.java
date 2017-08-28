@@ -40,13 +40,20 @@ public class EchoApplication {
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
-try{
-    String siteContent = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt").text;
+
+    try {
+      URL u = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
+
+      Object o = u.getContent();
+      System.out.println("I got a " + o.getClass().getName());
+    } catch (Exception ex) {
+      System.err.println(ex);
+    }
+        
 
     //more code goes here
-}catch(MalformedURLException ex){
-//do exception handling here
-}
+//}catch(MalformedURLException ex){
+
         return new TextMessage("TEST: "+event.getMessage().getText());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
