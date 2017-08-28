@@ -42,12 +42,17 @@ public class EchoApplication {
         //return new TextMessage("TEST: "+event.getMessage().getText());
 try{
     URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-        URLConnection con = url.openConnection();
+    try{
+       URLConnection con = url.openConnection();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
         String l;
         while ((l=in.readLine())!=null) {
             System.out.println(l);
         }
+    }catch(IOException e){
+        e.printStackTrace();
+    }
+ 
 
     //more code goes here
 }catch(MalformedURLException ex){
