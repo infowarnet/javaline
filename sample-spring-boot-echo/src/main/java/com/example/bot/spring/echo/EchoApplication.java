@@ -26,6 +26,12 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
+
 @SpringBootApplication
 @LineMessageHandler
 public class EchoApplication {
@@ -33,10 +39,41 @@ public class EchoApplication {
         SpringApplication.run(EchoApplication.class, args);
     }
 
+    	public static String callURL(String myURL) {
+		System.out.println("Requeted URL:" + myURL);
+		StringBuilder sb = new StringBuilder();
+		URLConnection urlConn = null;
+		InputStreamReader in = null;
+		try {
+			URL url = new URL(myURL);
+			urlConn = url.openConnection();
+			if (urlConn != null)
+				urlConn.setReadTimeout(60 * 1000);
+			if (urlConn != null && urlConn.getInputStream() != null) {
+				in = new InputStreamReader(urlConn.getInputStream(),
+						Charset.defaultCharset());
+				BufferedReader bufferedReader = new BufferedReader(in);
+				if (bufferedReader != null) {
+					int cp;
+					while ((cp = bufferedReader.read()) != -1) {
+						sb.append((char) cp);
+					}
+					bufferedReader.close();
+				}
+			}
+		in.close();
+		} catch (Exception e) {
+			throw new RuntimeException("Exception while calling URL:"+ myURL, e);
+		} 
+ 
+		return sb.toString();
+	}
+    
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
-        return new TextMessage("TEST: "+event.getMessage().getText());
+        //return new TextMessage("TEST: "+event.getMessage().getText());
+        return new TextMessage(callURL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt"));
     }
 
     @EventMapping
