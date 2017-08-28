@@ -41,18 +41,7 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 try{
-    URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-    try{
-       URLConnection con = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String l;
-        while ((l=in.readLine())!=null) {
-            System.out.println(l);
-        }
-    }catch(IOException e){
-        e.printStackTrace();
-    }
- 
+    String siteContent = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt").text;
 
     //more code goes here
 }catch(MalformedURLException ex){
