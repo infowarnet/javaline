@@ -40,14 +40,12 @@ public class EchoApplication {
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
-
-        URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-        URLConnection con = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String l;
-        while ((l=in.readLine())!=null) {
-            System.out.println(l);
-        }
+try{
+    URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
+    //more code goes here
+}catch(MalformedURLException ex){
+//do exception handling here
+}
         return new TextMessage("TEST: "+event.getMessage().getText());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
