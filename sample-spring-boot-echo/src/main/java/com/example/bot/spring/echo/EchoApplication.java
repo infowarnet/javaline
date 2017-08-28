@@ -26,9 +26,6 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import java.net.*;
-import java.io.*;
-
 @SpringBootApplication
 @LineMessageHandler
 public class EchoApplication {
@@ -41,19 +38,7 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-        URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-        URLConnection connection = website.openConnection();
-        BufferedReader in = new BufferedReader(
-                                new InputStreamReader(
-                                    connection.getInputStream()));
-
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-
-        while ((inputLine = in.readLine()) != null) 
-            response.append(inputLine);
-
-        in.close();
+        //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
         return new TextMessage(response.toString());
     }
