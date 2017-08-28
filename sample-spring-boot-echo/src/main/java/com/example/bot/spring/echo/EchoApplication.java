@@ -35,9 +35,13 @@ public class EchoApplication {
     public static void main(String[] args) {
         SpringApplication.run(EchoApplication.class, args);
     }
-    
-    public static String getText(String url) throws Exception {
-        URL website = new URL(url);
+        
+    @EventMapping
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+        System.out.println("event: " + event);
+        //return new TextMessage("TEST: "+event.getMessage().getText());
+
+        URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         URLConnection connection = website.openConnection();
         BufferedReader in = new BufferedReader(
                                 new InputStreamReader(
@@ -50,18 +54,8 @@ public class EchoApplication {
             response.append(inputLine);
 
         in.close();
-
-        return response.toString();
-    }
-    
-    @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        System.out.println("event: " + event);
-        //return new TextMessage("TEST: "+event.getMessage().getText());
         
-        
-        String content = EchoApplication.getText("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-        return new TextMessage(content);
+        return new TextMessage(response.toString());
     }
 
     @EventMapping
