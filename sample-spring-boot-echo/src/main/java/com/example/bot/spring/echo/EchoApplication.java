@@ -39,7 +39,7 @@ public class EchoApplication {
     }
         
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event)  {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 try{  
