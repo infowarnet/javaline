@@ -60,7 +60,7 @@ public class EchoApplication {
         } catch (Exception e) {
             e.printStackTrace();
         }   
- 
+         return new TextMessage("TEST: "+event.getMessage().getText());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
 //        return new TextMessage(response.toString());
