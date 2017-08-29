@@ -27,12 +27,8 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
+import java.io.*;
 
 
 @SpringBootApplication
@@ -47,31 +43,12 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-       URL url;
-
-        try {
-            // get URL content
-
-            String a="http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt";
-            url = new URL(a);
-            URLConnection conn = url.openConnection();
-
-            // open the stream and put it into BufferedReader
-            BufferedReader br = new BufferedReader(
-                               new InputStreamReader(conn.getInputStream()));
-
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                    System.out.println(inputLine);
-            }
-            br.close();
-
-            System.out.println("Done");
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
+        URLConnection con = url.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String l;
+        while ((l=in.readLine())!=null) {
+            System.out.println(l);
         }
         
        return new TextMessage("TEST: "+event.getMessage().getText());
