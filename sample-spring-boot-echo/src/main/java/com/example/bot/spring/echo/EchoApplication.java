@@ -27,10 +27,12 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 
 
 @SpringBootApplication
@@ -44,8 +46,33 @@ public class EchoApplication {
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event)  {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
-String result = getUrlAsString("https://www.google.com");
-System.out.println(result);
+
+       URL url;
+
+        try {
+            // get URL content
+
+            String a="http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt";
+            url = new URL(a);
+            URLConnection conn = url.openConnection();
+
+            // open the stream and put it into BufferedReader
+            BufferedReader br = new BufferedReader(
+                               new InputStreamReader(conn.getInputStream()));
+
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+                    System.out.println(inputLine);
+            }
+            br.close();
+
+            System.out.println("Done");
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         
        return new TextMessage("TEST: "+event.getMessage().getText());
  
@@ -59,35 +86,5 @@ System.out.println(result);
         System.out.println("event: " + event);
     }
    
-public static String getUrlAsString(String url)
-{
-    try
-    {
-        URL urlObj = new URL(url);
-        URLConnection con = urlObj.openConnection();
 
-        con.setDoOutput(true); // we want the response 
-        con.setRequestProperty("Cookie", "myCookie=test123");
-        con.connect();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-
-        String newLine = System.getProperty("line.separator");
-        while ((inputLine = in.readLine()) != null)
-        {
-            response.append(inputLine + newLine);
-        }
-
-        in.close();
-
-        return response.toString();
-    }
-    catch (Exception e)
-    {
-        throw new RuntimeException(e);
-    }
-}
 }
