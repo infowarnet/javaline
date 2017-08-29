@@ -27,8 +27,11 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 @SpringBootApplication
 @LineMessageHandler
@@ -42,31 +45,9 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-      try {
-         URL url = new URL("https://www.amrood.com");
-         URLConnection urlConnection = url.openConnection();
-         HttpURLConnection connection = null;
-         if(urlConnection instanceof HttpURLConnection) {
-            connection = (HttpURLConnection) urlConnection;
-         }else {
-            System.out.println("Please enter an HTTP URL.");
-            return;
-         }
-         
-         BufferedReader in = new BufferedReader(
-            new InputStreamReader(connection.getInputStream()));
-         String urlString = "";
-         String current;
-         
-         while((current = in.readLine()) != null) {
-            urlString += current;
-         }
-         System.out.println(urlString);
-      }catch(IOException e) {
-         e.printStackTrace();
-      }
+    
         
-         return new TextMessage("TEST: "+event.getMessage().getText());
+         return new TextMessage(callURL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt"));
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
 //        return new TextMessage(response.toString());
@@ -77,5 +58,34 @@ public class EchoApplication {
         System.out.println("event: " + event);
     }
    
+ public static String callURL(String myURL) {
+		System.out.println("Requeted URL:" + myURL);
+		StringBuilder sb = new StringBuilder();
+		URLConnection urlConn = null;
+		InputStreamReader in = null;
+		try {
+			URL url = new URL(myURL);
+			urlConn = url.openConnection();
+			if (urlConn != null)
+				urlConn.setReadTimeout(60 * 1000);
+			if (urlConn != null && urlConn.getInputStream() != null) {
+				in = new InputStreamReader(urlConn.getInputStream(),
+						Charset.defaultCharset());
+				BufferedReader bufferedReader = new BufferedReader(in);
+				if (bufferedReader != null) {
+					int cp;
+					while ((cp = bufferedReader.read()) != -1) {
+						sb.append((char) cp);
+					}
+					bufferedReader.close();
+				}
+			}
+		in.close();
+		} catch (Exception e) {
+			throw new RuntimeException("Exception while calling URL:"+ myURL, e);
+		} 
+ 
+		return sb.toString();
+	}
   
 }
