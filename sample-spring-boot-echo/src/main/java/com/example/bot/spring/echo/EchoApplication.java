@@ -27,8 +27,10 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 
-import java.net.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 
 @SpringBootApplication
@@ -43,15 +45,21 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-        URL url = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-        URLConnection con = url.openConnection();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String l;
-        while ((l=in.readLine())!=null) {
-            System.out.println(l);
-        }
-        
-       return new TextMessage("TEST: "+event.getMessage().getText());
+        try {
+            URL url = new URL("http://www.itcuties.com");
+            InputStream is = url.openStream();
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+             
+            String line;
+            while ( (line = br.readLine()) != null)
+                System.out.println(line);
+             
+            br.close();
+            is.close();
+             
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
  
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
         
