@@ -42,8 +42,29 @@ public class EchoApplication {
         System.out.println("event: " + event);
         //return new TextMessage("TEST: "+event.getMessage().getText());
 
-     String output  = getUrlContents("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
-    System.out.println(output);
+      try {
+         URL url = new URL("https://www.amrood.com");
+         URLConnection urlConnection = url.openConnection();
+         HttpURLConnection connection = null;
+         if(urlConnection instanceof HttpURLConnection) {
+            connection = (HttpURLConnection) urlConnection;
+         }else {
+            System.out.println("Please enter an HTTP URL.");
+            return;
+         }
+         
+         BufferedReader in = new BufferedReader(
+            new InputStreamReader(connection.getInputStream()));
+         String urlString = "";
+         String current;
+         
+         while((current = in.readLine()) != null) {
+            urlString += current;
+         }
+         System.out.println(urlString);
+      }catch(IOException e) {
+         e.printStackTrace();
+      }
         
          return new TextMessage("TEST: "+event.getMessage().getText());
         //URL website = new URL("http://cdn.crunchify.com/wp-content/uploads/code/json.sample.txt");
@@ -56,36 +77,5 @@ public class EchoApplication {
         System.out.println("event: " + event);
     }
    
-  private static String getUrlContents(String theUrl)
-  {
-    StringBuilder content = new StringBuilder();
-
-    // many of these calls can throw exceptions, so i've just
-    // wrapped them all in one try/catch statement.
-    try
-    {
-      // create a url object
-      URL url = new URL(theUrl);
-
-      // create a urlconnection object
-      URLConnection urlConnection = url.openConnection();
-
-      // wrap the urlconnection in a bufferedreader
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
-      String line;
-
-      // read from the urlconnection via the bufferedreader
-      while ((line = bufferedReader.readLine()) != null)
-      {
-        content.append(line + "\n");
-      }
-      bufferedReader.close();
-    }
-    catch(Exception e)
-    {
-      e.printStackTrace();
-    }
-    return content.toString();
-  }
+  
 }
