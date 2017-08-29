@@ -29,6 +29,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.io.*;
 import java.net.*;
+import java.io.IOException;
 
 @SpringBootApplication
 @LineMessageHandler
